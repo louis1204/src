@@ -154,11 +154,12 @@ public class PixImage {
     String s = "";
     for (int htemp=0; htemp<h; htemp++) {
       for (int wtemp=0; wtemp<w; wtemp++) {
-        s += "\n";
+        s += " ";
         for (int i=0; i<3; i++) {
           s += loc[htemp][wtemp][i];
         }
       }
+      s += "\n";
     }
     return s;
   }

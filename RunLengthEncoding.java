@@ -85,7 +85,6 @@ public class RunLengthEncoding implements Iterable{
 	   */
 	  public PixImage toPixImage() {
 	    PixImage pi =  new PixImage(this.width, this.height);	//set up piximage with width and height
-	    
 	    RunIterator runLengthIterator = this.iterator();	//set up the iterator
 	    
 	    int[] item;
@@ -96,7 +95,7 @@ public class RunLengthEncoding implements Iterable{
 	    	item = runLengthIterator.next();
 	    	for(int i = 0; i < item[3]; i++)	//for the run length
 	    	{
-	    		if(heightCounter > this.height - 1)	//if height exceeds the width of image
+	    		if(heightCounter > this.height - 1)	//if height exceeds the height of image
 		    	{
 		    		x++;	//increment x
 		    		heightCounter = 0;	//reset counter
@@ -137,6 +136,8 @@ public class RunLengthEncoding implements Iterable{
 	   *  @param image is the PixImage to run-length encode.
 	   */
 	  public RunLengthEncoding(PixImage image) {
+		this.height = image.getHeight();
+		this.width = image.getWidth();
 		int[] subRun = new int[4];
 		int currRed = image.getRed(image.getWidth() - 1, image.getHeight() - 1);	//get the very last element's rgb
 		int currGreen = image.getGreen(image.getWidth() - 1, image.getHeight() - 1);
