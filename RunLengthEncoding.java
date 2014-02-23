@@ -95,15 +95,17 @@ public class RunLengthEncoding implements Iterable{
 	    	int[] item = runLengthIterator.next();
 	    	for(int i = 0; i < item[0]; i++)	//for the run length
 	    	{
-	    		if(heightCounter > this.height - 1)	//if height exceeds the height of image
+	    		if(heightCounter > this.width - 1)	//if height exceeds the height of image
 		    	{
 		    		x++;	//increment x
 		    		heightCounter = 0;	//reset counter
 		    	}
-	    		pi.setPixel(x, heightCounter, (short)item[1], (short)item[2], (short)item[3]); //set pixel    		
+	    		pi.setPixel(heightCounter, x, (short)item[1], (short)item[2], (short)item[3]); //set pixel    		
 	    		heightCounter++;
 	    	}
 	    }
+	    
+	    System.out.println(pi.toString());
 	    return pi;
 	  }
 
