@@ -30,17 +30,17 @@ public class RunLengthEncoding implements Iterable{
   
   public RunLengthEncoding(int width, int height) {
     int[] black = new int[4];
-    black[0] = 0;	//r
-    black[1] = 0;	//g
-    black[2] = 0;	//b
-    black[3] = width * height; //length of run
+    black[0] = width * height; //length of run
+    black[1] = 0;	//r
+    black[2] = 0;	//g
+    black[3] = 0;	//b
+    
     this.height = height;
     this.width = width;
     run = new DList1(black);
   }
 
   public RunLengthEncoding(int width, int height, int[] red, int[] green, int[] blue, int[] runLengths) {
-    int[] subRun = new int[4];
     run = new DList1();
     int sum = 0;
     this.height = height;
@@ -48,10 +48,11 @@ public class RunLengthEncoding implements Iterable{
     //going backwards since we only have insertFront
     for(int i = runLengths.length - 1; i > -1; i--)
     {
-    	subRun[0] = red[i];	//r
-    	subRun[1] = green[i];	//g
-    	subRun[2] = blue[i];	//b
-    	subRun[3] = runLengths[i];	//run length
+    	int[] subRun = new int[4];
+    	subRun[0] = runLengths[i];	//run length
+    	subRun[1] = red[i];	//r
+    	subRun[2] = green[i];	//g
+    	subRun[3] = blue[i];	//b
     	run.insertFront(subRun);	//insert the run to the dlist1
     	sum = sum + runLengths[i];	//summing up the # of elements
     }
@@ -92,14 +93,14 @@ public class RunLengthEncoding implements Iterable{
 	    while(runLengthIterator.hasNext())
 	    {
 	    	int[] item = runLengthIterator.next();
-	    	for(int i = 0; i < item[3]; i++)	//for the run length
+	    	for(int i = 0; i < item[0]; i++)	//for the run length
 	    	{
 	    		if(heightCounter > this.height - 1)	//if height exceeds the height of image
 		    	{
 		    		x++;	//increment x
 		    		heightCounter = 0;	//reset counter
 		    	}
-	    		pi.setPixel(x, heightCounter, (short)item[0], (short)item[1], (short)item[2]); //set pixel    		
+	    		pi.setPixel(x, heightCounter, (short)item[1], (short)item[2], (short)item[3]); //set pixel    		
 	    		heightCounter++;
 	    	}
 	    }
@@ -117,17 +118,18 @@ public class RunLengthEncoding implements Iterable{
 	   */
 	  public String toString() {
 		  RunIterator ri = this.iterator();
+		  StringBuilder s = new StringBuilder();
 		  while(ri.hasNext())
 		  {
 			  int[] item = ri.next();
-			  StringBuilder s = new StringBuilder();
+			  
 			  s.append("[");
-			  s.append(item[0] + ", ");
 			  s.append(item[1] + ", ");
-			  s.append(item[2] + "] Run: " + item[3]);
+			  s.append(item[2] + ", ");
+			  s.append(item[3] + "] Run: " + item[0]);
 			  System.out.println(s.toString());
 		  }
-		  return "";
+		  return s.toString();
 	  }
 
 
@@ -166,10 +168,11 @@ public class RunLengthEncoding implements Iterable{
 				else
 				{	//no longer the same
 					int[] subRun = new int[4];
-					subRun[0] = currRed;	//r
-			    	subRun[1] = currGreen;	//g
-			    	subRun[2] = currBlue;	//b
-			    	subRun[3] = runLength;	//run length
+					subRun[0] = runLength;	//run length
+					subRun[1] = currRed;	//r
+			    	subRun[2] = currGreen;	//g
+			    	subRun[3] = currBlue;	//b
+			    	
 			    	run.insertFront(subRun);	//insert the run to the dlist1
 			    	currRed = image.getRed(column, row);	//reset current values and run
 			    	currGreen = image.getGreen(column, row);
@@ -179,10 +182,11 @@ public class RunLengthEncoding implements Iterable{
 			}
 		}
 		int[] subRun = new int[4];
-			subRun[0] = currRed;	//r
-	    	subRun[1] = currGreen;	//g
-	    	subRun[2] = currBlue;	//b
-	    	subRun[3] = runLength;	//run length
+    	subRun[0] = runLength;	//run length
+			subRun[1] = currRed;	//r
+	    	subRun[2] = currGreen;	//g
+	    	subRun[3] = currBlue;	//b
+
 	    	run.insertFront(subRun);	//insert the run to the dlist1
 	    check();
 	  }
@@ -209,10 +213,11 @@ public class RunLengthEncoding implements Iterable{
 					else
 					{	//no longer the same
 						int[] subRun = new int[4];
-						subRun[0] = currRed;	//r
-				    	subRun[1] = currGreen;	//g
-				    	subRun[2] = currBlue;	//b
-				    	subRun[3] = runLength;	//run length
+						subRun[0] = runLength;	//run length
+						subRun[1] = currRed;	//r
+				    	subRun[2] = currGreen;	//g
+				    	subRun[3] = currBlue;	//b
+				    	
 				    	run.insertFront(subRun);	//insert the run to the dlist1
 				    	currRed = image.getRed(column, row);	//reset current values and run
 				    	currGreen = image.getGreen(column, row);
@@ -222,10 +227,11 @@ public class RunLengthEncoding implements Iterable{
 				}
 			}
 			int[] subRun = new int[4];
-				subRun[0] = currRed;	//r
-		    	subRun[1] = currGreen;	//g
-		    	subRun[2] = currBlue;	//b
-		    	subRun[3] = runLength;	//run length
+	    	subRun[0] = runLength;	//run length
+				subRun[1] = currRed;	//r
+		    	subRun[2] = currGreen;	//g
+		    	subRun[3] = currBlue;	//b
+
 		    	run.insertFront(subRun);	//insert the run to the dlist1
 		    check();
 		  }
@@ -235,7 +241,7 @@ public class RunLengthEncoding implements Iterable{
 	   *  all run lengths does not equal the number of pixels in the image.
 	   */
 	  public void check() {
-		int[] item;
+		
 	    RunIterator ri = this.iterator();
 	    int previousRed = -1;	//previous rgb value
 	    int previousGreen = -1;	//init to -1 to ensure initially different
@@ -243,17 +249,18 @@ public class RunLengthEncoding implements Iterable{
 	    
 	    while(ri.hasNext())
 	    {
+	    	int[] item;
 	    	item = ri.next();
-	    	if(item[0] == previousRed &&
-	    			item[1] == previousGreen &&
-	    			item[2] == previousBlue)
+	    	if(item[1] == previousRed &&
+	    			item[2] == previousGreen &&
+	    			item[3] == previousBlue)
 	    	{
 	    		System.out.print("Same elements in run length encoding");
 	    	}
 	    	
-	    	previousRed = item[0];
-	    	previousGreen = item[1];
-	    	previousBlue = item[2];
+	    	previousRed = item[1];
+	    	previousGreen = item[2];
+	    	previousBlue = item[3];
 	    }
 	  }
 	  

@@ -67,7 +67,7 @@ public class DList1 {
    *  insertFront() inserts an item at the front of a DList1.
    */
   public void insertFront(int[] i) {
-    if (size ==0) {
+    if (size == 0) {
       head = new DListNode1();
       tail = head;
       head.item = i;
